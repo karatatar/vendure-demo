@@ -4,11 +4,12 @@ WORKDIR /home/node/app
 RUN npm install pm2 -g --unsafe-perm
 COPY package.json ./
 COPY --chown=node:node yarn.lock ./
+COPY --chown=node:node . .
 USER node
 RUN yarn
 COPY --chown=node:node . .
 RUN ["chmod", "+x", "install-storefront.sh"]
 RUN ["./install-storefront.sh", "v0.1.25"]
 RUN ["yarn", "tsc"]
-EXPOSE 3000
+EXPOSE 8000
 CMD [ "pm2-runtime", "process.json" ]
